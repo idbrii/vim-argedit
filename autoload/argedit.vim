@@ -67,14 +67,25 @@ function! s:ApplyChangesAndExit()
 	bwipeout
 endf
 
+function! s:AppendFiles(string_of_filenames)
+	let files = substitute(a:string_of_filenames, ' ', "\n", 'g')
+	silent $put =files
+endf
+
 function! s:SetupArgEditBufferControl()
 	" Add some methods to signal completion of args modification.
 
 	nnoremap <buffer> ZZ :call <SID>ApplyChangesAndExit()<CR>
+
 	" WriteArgs won't be available if it's already defined.
-	silent! command -buffer WriteArgs :call <SID>ApplyChangesAndExit()<CR>
+	silent! command -buffer WriteArgs call <SID>ApplyChangesAndExit()<CR>
 	" TODO: Add a :w and :wq and :x command. Probably need to use cmdalias:
 	" https://github.com/vim-scripts/cmdalias.vim
+
+	if exists(":Qargs") == 2 && exists("*QuickfixFilenames") > 0
+		" Replace normal Qargs with one that just operates on this buffer.
+		command! -buffer Qargs call <SID>AppendFiles(QuickfixFilenames())
+	endif
 endf
 
 function! argedit#CreateArgEditBuffer()

@@ -8,11 +8,16 @@ Introduction~
 ArgEdit lets you modify your |:args| in a vim buffer.
 
                                                         *argedit-requirements*
-ArgEdit Requirements~
+ArgEdit Requirements/Recommendations~
 
 ArgEdit does not require any scratch buffer plugin, but will use any
 |:Scratch| command defined. ArgEdit recommends vim-itchy:
-        https://github.com/pydave/itchy.vim
+    https://github.com/pydave/itchy.vim
+
+While it's not required, ArgEdit has special support for Qargs:
+    https://github.com/nelstrom/vim-qargs
+Inside the ArgEdit buffer, |:Qargs| will add the files from the quickfix to
+the buffer. 
 
                                                             *argedit-commands*
 Commands~
