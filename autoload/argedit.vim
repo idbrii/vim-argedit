@@ -3,7 +3,21 @@
 " in a buffer to manipulate it (add or remove files).
 " Recommends: vim-itchy for improved scratch buffer opening.
 
+function! s:UniquifyList(input_list)
+	" Use a dictionary to create a unique list of inputs (since dictionary
+	" keys must be unique).
+
+	let d = {}
+	for item in a:input_list
+		let d[item] = 1
+	endfor
+
+	return keys(d)
+endf
+
 function! s:GetNewlineSeparatedArgs()
+	" Get a string with the current args separated by newlines.
+
 	let old_c = @c
 
 	let @c = ''
@@ -20,12 +34,7 @@ function! s:GetNewlineSeparatedArgs()
 	let s:arg_count = len(file_list)
 
 	if g:argedit_remove_dupes
-		" uniquify arguments
-		let d = {}
-		for fname in file_list
-			let d[fname] = 1
-		endfor
-		let file_list = keys(d)
+		let file_list = s:UniquifyList(file_list)
 	endif
 
 	let files = join(file_list, "\n")
@@ -34,8 +43,10 @@ function! s:GetNewlineSeparatedArgs()
 endf
 
 function! s:AddLineToArgs()
+	" Add the current line to the argument list.
+	"
 	" Only add valid files to the arglist. We could add pseudo buffers (like
-	" BufExplorer), but what exceptions.
+	" BufExplorer), but what exceptions would I want?
 	let fname = getline('.')
 	if filereadable(fname)
 		exec 'argadd '. fname
@@ -43,6 +54,8 @@ function! s:AddLineToArgs()
 endf
 
 function! s:ApplyChangesAndExit()
+	" Modify argument list to match buffer.
+
 	" Clear all old args. Use how many we started with. This may have changed
 	" if the user touched the arglist while the buffer was open.
 	exec '0,'. s:arg_count .'argdelete'
@@ -55,13 +68,18 @@ function! s:ApplyChangesAndExit()
 endf
 
 function! s:SetupArgEditBufferControl()
+	" Add some methods to signal completion of args modification.
+
 	nnoremap <buffer> ZZ :call <SID>ApplyChangesAndExit()<CR>
+	" WriteArgs won't be available if it's already defined.
 	silent! command -buffer WriteArgs :call <SID>ApplyChangesAndExit()<CR>
 	" TODO: Add a :w and :wq and :x command. Probably need to use cmdalias:
 	" https://github.com/vim-scripts/cmdalias.vim
 endf
 
 function! argedit#CreateArgEditBuffer()
+	" Create the arg modifying buffer.
+
 	let file_list = s:GetNewlineSeparatedArgs()
 
 	if exists(':Scratch') == 2
