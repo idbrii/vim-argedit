@@ -1,0 +1,44 @@
+*argedit.txt*        Edit :args like text.
+
+==============================================================================
+
+                                                                     *argedit*
+Introduction~
+
+ArgEdit lets you modify your |:args| in a vim buffer.
+
+                                                        *argedit-requirements*
+ArgEdit Requirements~
+
+ArgEdit does not require any scratch buffer plugin, but will use any
+|:Scratch| command defined. ArgEdit recommends vim-itchy:
+        https://github.com/pydave/itchy.vim
+
+                                                            *argedit-commands*
+Commands~
+
+:ArgEdit                                                            *:ArgEdit*
+                Open a scratch buffer that contains the current arglist. When
+                closing this buffer with :WriteArgs or ZZ, the arglist is
+                updated.
+
+:WriteArgs                                                        *:WriteArgs*
+                Only inside an |:ArgEdit| buffer!
+
+                Closes the buffer and applies the contents to the |:args|
+                list.
+
+
+==============================================================================
+
+                                                       *argedit-configuration*
+Configuration~
+
+g:argedit_remove_dupes                                *g:argedit_remove_dupes*
+                When enabled, ignores duplicates in the |:args| list when
+                populating the |:ArgEdit| buffer.
+
+
+==============================================================================
+
+ vim:tw=78:ts=8:ft=help:norl:
