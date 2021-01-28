@@ -64,6 +64,9 @@ function! s:ApplyChangesAndExit() abort
 
 	" Clear the scratch buffer
 	bwipeout
+
+	" Print out new arglist
+	args
 endf
 
 function! s:AppendFiles(string_of_filenames) abort
