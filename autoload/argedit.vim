@@ -3,7 +3,7 @@
 " in a buffer to manipulate it (add or remove files).
 " Recommends: vim-itchy for improved scratch buffer opening.
 
-function! s:UniquifyList(input_list)
+function! s:UniquifyList(input_list) abort
 	" Use a dictionary to create a unique list of inputs (since dictionary
 	" keys must be unique).
 
@@ -15,7 +15,7 @@ function! s:UniquifyList(input_list)
 	return keys(d)
 endf
 
-function! s:GetNewlineSeparatedArgs()
+function! s:GetNewlineSeparatedArgs() abort
 	" Get a string with the current args separated by newlines.
 
 	let old_c = @c
@@ -42,7 +42,7 @@ function! s:GetNewlineSeparatedArgs()
 	return files
 endf
 
-function! s:AddLineToArgs()
+function! s:AddLineToArgs() abort
 	" Add the current line to the argument list.
 	"
 	" Only add valid files to the arglist. We could add pseudo buffers (like
@@ -53,7 +53,7 @@ function! s:AddLineToArgs()
 	endif
 endf
 
-function! s:ApplyChangesAndExit()
+function! s:ApplyChangesAndExit() abort
 	" Modify argument list to match buffer.
 
 	" Clear all old args.
@@ -66,12 +66,12 @@ function! s:ApplyChangesAndExit()
 	bwipeout
 endf
 
-function! s:AppendFiles(string_of_filenames)
+function! s:AppendFiles(string_of_filenames) abort
 	let files = substitute(a:string_of_filenames, ' ', "\n", 'g')
 	silent $put =files
 endf
 
-function! s:SetupArgEditBufferControl()
+function! s:SetupArgEditBufferControl() abort
 	" Add some methods to signal completion of args modification.
 
 	nnoremap <buffer> ZZ :call <SID>ApplyChangesAndExit()<CR>
@@ -87,7 +87,7 @@ function! s:SetupArgEditBufferControl()
 	endif
 endf
 
-function! argedit#CreateArgEditBuffer()
+function! argedit#CreateArgEditBuffer() abort
 	" Create the arg modifying buffer.
 
 	let file_list = s:GetNewlineSeparatedArgs()
