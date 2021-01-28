@@ -48,7 +48,12 @@ function! s:AddLineToArgs() abort
 	" Only add valid files to the arglist. We could add pseudo buffers (like
 	" BufExplorer), but what exceptions would I want?
 	let fname = getline('.')
+
 	if filereadable(fname)
+		" argadd uses spaces as separators. Since only adding one, we can
+		" safely escape all spaces. This works even on windows with
+		" noshellslash (where \ is escape and directory separator).
+		let fname = escape(fname, ' ')
 		exec 'argadd '. fname
 	endif
 endf
