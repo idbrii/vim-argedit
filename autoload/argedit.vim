@@ -56,9 +56,8 @@ endf
 function! s:ApplyChangesAndExit()
 	" Modify argument list to match buffer.
 
-	" Clear all old args. Use how many we started with. This may have changed
-	" if the user touched the arglist while the buffer was open.
-	exec '0,'. s:arg_count .'argdelete'
+	" Clear all old args.
+	0,$argdelete
 
 	" Add each uncommented line.
 	vglobal/^#/call s:AddLineToArgs()
